@@ -1,11 +1,16 @@
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 const port = process.env.PORT || 5555 ;
 const app = express() ;
 
-app.use(cors()) ;
+app.use(cors({
+  origin : [
+    'http://localhost:5173'
+  ],
+  credentials : true ,
+})) ;
 app.use(express.json()) ;
 require("dotenv").config() ;
 
@@ -26,12 +31,95 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
+    const usersCollection = client.db("EduManage").collection("users") ;
     const schoolsCollection = client.db("EduManage").collection("schools") ;
+    const classesCollection = client.db("EduManage").collection("classes") ;
+
+    app.get('/yourSchools' , async (req , res) => {
+      const {email} = req.query ;
+      const result = await schoolsCollection.find({email}).toArray() ;
+      res.send(result) ;
+    })
+
+    app.get('/yourClasses' , async (req , res) => {
+      const {email} = req.query ;
+      const result = await classesCollection.find({email}).toArray() ;
+      res.send(result) ;
+    })
+
+    app.get('/schoolsDetails' , async (req , res) => {
+      const {id} = req.query ;
+      const result = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
+      res.send(result) ;
+    })
+
+    app.get('/subjects' , async (req , res) => {
+      const {id} = req.query ;
+      const result = await classesCollection.findOne({_id : new ObjectId(id)}) ;
+      res.send(result) ;
+    })
+
+    // to get user data for useing profile -------------
+    app.get('/userData' , async (req , res) => {
+      const {email} = req.query ;
+      const result = await usersCollection.findOne({email}) ;
+      res.send(result) ;
+    })
+
+    // to get classes for use school -------------
+    app.get('/viewClasses' , async (req , res) => {
+      const {id} = req.query ;
+      const school = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
+      const classes = school?.classes?.map((classId) => new ObjectId(classId))
+      const result = await classesCollection.find({_id : {$in : classes}}).toArray() ;
+      res.send(result) ;
+    })
 
     app.post('/addSchool' , async (req , res) => {
         const data = req.body ;
         const result = await schoolsCollection.insertOne(data) ;
         res.send(result) ;
+    })
+
+    app.post('/addClass' , async (req , res) => {
+      const classData = req.body ;
+      const addClass = await classesCollection.insertOne(classData) ;
+      const classId = addClass.insertedId.toHexString()
+      const updatedSchool = await schoolsCollection.findOne({_id : new  ObjectId(classData?.schoolId)})
+      updatedSchool.classes.push(classId) ;
+      await schoolsCollection.updateOne({_id : new  ObjectId(classData?.schoolId)} , { $set : { classes :  updatedSchool.classes} })
+      res.send(addClass) ;
+    })
+
+    app.put('/updateSchool' , async (req , res) => {
+      const {id} = req.query ;
+      const updatedData = req.body ;
+      const result = await schoolsCollection.updateOne({_id : new ObjectId(id)} , { $set : { ...updatedData } }) ;
+      res.send(result)
+    })
+
+    // to Create a user and save to db -------------
+    app.put('/createUser' , async (req , res) => {
+      const data = req.body ;
+      const isAxist = await usersCollection.findOne({email : data?.email}) ;
+      if(!isAxist){
+        const user = await usersCollection.insertOne(data) ;
+        return res.send(user) ;
+      }
+      else{
+        return res.send({message : "Already Axist"}) ;
+      }
+    })
+
+    // update user device info or data -------------
+    app.put('/updateDevice' , async (req , res) => {
+      const data = req.body ;
+      const userData = await usersCollection.findOne({email : data?.email}) ;
+      if(userData?.email){
+        userData?.devicesInfo?.push(data?.devicesInfo) ;
+        const result = await usersCollection.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
+        res.send(result) ;
+      }
     })
 
     // Send a ping to confirm a successful connection
