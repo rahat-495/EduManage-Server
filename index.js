@@ -36,6 +36,7 @@ async function run() {
     const usersCollection = client.db("EduManage").collection("users") ;
     const schoolsCollection = client.db("EduManage").collection("schools") ;
     const classesCollection = client.db("EduManage").collection("classes") ;
+    const addmissionsCollection = client.db("EduManage").collection("addmissions") ;
 
     app.get('/yourSchools' , async (req , res) => {
       const {email} = req.query ;
@@ -137,7 +138,15 @@ async function run() {
     // to post the addmission request --------------
     app.post('/reqForAddmission' , async (req , res) => {
       const addmissionData = req.body ;
+      const isAxist = await addmissionsCollection.findOne({ $and : [ {studentEmail : addmissionData?.studentEmail} , {schoolId : addmissionData?.schoolId} , {grade : addmissionData?.grade} ] }) ;
       
+      if(!isAxist?.studentEmail){
+        const result = await addmissionsCollection.insertOne(addmissionData) ;
+        return res.send(result) ;
+      }
+      else{
+        return res.send({message : "You Are Already Applied , on this school or grade !" , success : false}) ;
+      }
     })
 
     app.put('/updateSchool' , async (req , res) => {
