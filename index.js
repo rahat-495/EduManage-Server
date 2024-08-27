@@ -7,7 +7,9 @@ const app = express() ;
 
 app.use(cors({
   origin : [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://school-management-de5a5.web.app',
+    'https://school-management-de5a5.firebaseapp.com'
   ],
   credentials : true ,
 })) ;
@@ -75,6 +77,46 @@ async function run() {
       res.send(result) ;
     })
 
+    // to get the user role ----------------------
+    app.get('/userRole' , async (req , res) => {
+      const {email} = req.query ;
+      const userData = await usersCollection.findOne({email}) ;
+      res.send({role : userData?.role}) ;
+    })
+
+    // to get the all schools data for show schools -----------
+    app.get('/allSchools' , async (req , res) => {
+      const result = await schoolsCollection.find().toArray() ;
+      res.send(result) ;
+    })
+
+    // to get the classes names -------------------
+    app.get('/classesData' , async (req , res) => {
+      const {schoolId} = req.query ;
+      if(schoolId){
+        const school  = await schoolsCollection.findOne({_id : new ObjectId(schoolId)}) ;
+        const classesId = school?.classes?.map((id) => new ObjectId(id)) ;
+        const classes = await classesCollection.find({ _id : { $in : classesId } }).toArray() ;
+        res.send(classes) ;
+      }
+    })
+
+    // to get the single school data --------------
+    app.get('/schoolData' , async (req , res) => {
+      const {id} = req.query ;
+      const result = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
+      res.send(result) ;
+    })
+
+    // to get the selected schools grades ---------
+    app.get('/gradesInfo' , async (req , res) => {
+      const {schoolId} = req.query ;
+      const schooldata = await schoolsCollection.findOne({_id : new ObjectId(schoolId)}) ;
+      const gradesId = schooldata?.classes?.map((id) => new ObjectId(id)) ;
+      const gradesData = await classesCollection.find({_id : { $in : gradesId }}).sort({ gradeNumber : -1 }).toArray() ;
+      res.send(gradesData) ;
+    })
+
     app.post('/addSchool' , async (req , res) => {
         const data = req.body ;
         const result = await schoolsCollection.insertOne(data) ;
@@ -84,11 +126,18 @@ async function run() {
     app.post('/addClass' , async (req , res) => {
       const classData = req.body ;
       const addClass = await classesCollection.insertOne(classData) ;
-      const classId = addClass.insertedId.toHexString()
+      const classId = addClass.insertedId.toHexString() ;
       const updatedSchool = await schoolsCollection.findOne({_id : new  ObjectId(classData?.schoolId)})
-      updatedSchool.classes.push(classId) ;
-      await schoolsCollection.updateOne({_id : new  ObjectId(classData?.schoolId)} , { $set : { classes :  updatedSchool.classes} })
+      updatedSchool?.classes?.push(classId) ;
+      updatedSchool?.availableGrades?.push(classData?.gradeNumber) ;
+      await schoolsCollection.updateOne({_id : new  ObjectId(classData?.schoolId)} , { $set : { classes :  updatedSchool?.classes , availableGrades : updatedSchool?.availableGrades } })
       res.send(addClass) ;
+    })
+
+    // to post the addmission request --------------
+    app.post('/reqForAddmission' , async (req , res) => {
+      const addmissionData = req.body ;
+      
     })
 
     app.put('/updateSchool' , async (req , res) => {
@@ -115,10 +164,24 @@ async function run() {
     app.put('/updateDevice' , async (req , res) => {
       const data = req.body ;
       const userData = await usersCollection.findOne({email : data?.email}) ;
+
       if(userData?.email){
-        userData?.devicesInfo?.push(data?.devicesInfo) ;
-        const result = await usersCollection.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
-        res.send(result) ;
+        
+        const os = userData?.devicesInfo?.find((os) => os?.deviceName === data?.devicesInfo?.deviceName && os) ;
+        const date = userData?.devicesInfo?.find((os) => os?.loginDate?.includes(data?.devicesInfo?.loginDate) && os) ;
+
+        if(date?.loginDate !== data?.devicesInfo?.loginDate){
+          if(os?.deviceName === data?.devicesInfo?.deviceName){
+            os.loginDate = data?.devicesInfo?.loginDate ;
+            const result = await usersCollection.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
+            res.send(result) ;
+          }
+          else{
+            userData?.devicesInfo?.push(data?.devicesInfo)
+            const result = await usersCollection.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
+            res.send(result) ;
+          }
+        }
       }
     })
 
