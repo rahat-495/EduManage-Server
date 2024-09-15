@@ -118,6 +118,40 @@ async function run() {
       res.send(gradesData) ;
     })
 
+    // to get the all personal addmissions --------
+    app.get('/addmissionsData' , async (req , res) => {
+      const {uid} = req.query ;
+      const result = await addmissionsCollection.find({studentUid : uid}).toArray() ;
+      res.send(result) ;
+    })
+
+    // to get the current Addissional form data -------
+    app.get('/currentAddissionFormData' , async (req , res) => {
+      const {id} = req.query ;
+      const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      res.send(result) ;
+    })
+
+    // to get the all schools and grades addmissions reqs ----
+    app.get('/schoolsAndGradesAddReqs' , async (req , res) => {
+      const {email} = req.query ;
+      const schoolData = await schoolsCollection.find({email}).toArray() ;
+      const gradesData = await classesCollection.find({email}).toArray() ;
+      const schoolId = schoolData.map((data) => data?._id.toString()) ;
+      // const gradesId = gradesData.map((data) => data?._id.toString()) ;
+      const school = await addmissionsCollection.find({ schoolId: { $in: schoolId } }).toArray() ;
+      // const grades = await addmissionsCollection.find({ grade: { $in: gradesId } }).toArray() ;
+      res.send(school) ;
+    })
+
+    // to get the details a addmission info ---------
+    app.get('/studentAddmissionInfo' , async (req , res) => {
+      const {id} = req.query ;
+      const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      const gradeData = await classesCollection.findOne({_id : new ObjectId(result?.grade)}) ;
+      res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
+    })
+
     app.post('/addSchool' , async (req , res) => {
         const data = req.body ;
         const result = await schoolsCollection.insertOne(data) ;
@@ -147,6 +181,14 @@ async function run() {
       else{
         return res.send({message : "You Are Already Applied , on this school or grade !" , success : false}) ;
       }
+    })
+
+    // to update the addmission data ---------------
+    app.post('/updateAddmission' , async (req , res) => {
+      const {id} = req.query ;
+      const data = req.body ;
+      const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { ...data } })
+      res.send(result) ;
     })
 
     app.put('/updateSchool' , async (req , res) => {
