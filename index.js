@@ -172,9 +172,10 @@ async function run() {
     // to post the addmission request --------------
     app.post('/reqForAddmission' , async (req , res) => {
       const addmissionData = req.body ;
-      const isAxist = await addmissionsCollection.findOne({ $and : [ {studentEmail : addmissionData?.studentEmail} , {schoolId : addmissionData?.schoolId} , {grade : addmissionData?.grade} ] }) ;
-      
-      if(!isAxist?.studentEmail){
+      const {gradeNumber} = await classesCollection.findOne({_id : new ObjectId(addmissionData?.grade)}) ;
+      addmissionData.gradeNumber = gradeNumber ;
+      const isAxist = await addmissionsCollection.findOne({studentEmail : addmissionData?.studentEmail}) ;
+      if(addmissionData?.schoolId !== isAxist?.schoolId){
         const result = await addmissionsCollection.insertOne(addmissionData) ;
         return res.send(result) ;
       }
@@ -233,6 +234,36 @@ async function run() {
             res.send(result) ;
           }
         }
+      }
+    })
+
+    app.patch('/updateSchoolJoinStatus' , async (req , res) => {
+      const {id , schoolJoiningStatus} = req.body ;
+      const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      if(!addmissionData?.isjoined){
+        // if(addmissionData?.gradeJoiningStatus === 'accepted' && addmissionData?.schoolJoiningStatus === 'accepted'){
+        //   await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
+        // }
+        // if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
+        //   await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+        // }
+        const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { schoolJoiningStatus } }) ;
+        return res.send(result) ;
+      }
+      else{
+        return res.send({message : "You Can't Accept Now !" , status : 'error'}) ;
+      }
+    })
+    
+    app.patch('/updateGradeJoinStatus' , async (req , res) => {
+      const {id , gradeJoiningStatus} = req.body ;
+      const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      if(addmissionData?.gradeJoiningStatus !== 'accepted' || addmissionData?.schoolJoiningStatus !== 'accepted'){
+        const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { gradeJoiningStatus } }) ;
+        return res.send(result) ;
+      }
+      else{
+        return res.send({message : "You Can't Accept Now !" , status : 'error'}) ;
       }
     })
 
