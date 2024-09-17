@@ -152,12 +152,14 @@ async function run() {
       res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
     })
 
+    // to adding schools ----------------------
     app.post('/addSchool' , async (req , res) => {
         const data = req.body ;
         const result = await schoolsCollection.insertOne(data) ;
         res.send(result) ;
     })
 
+    // to adding grades / classes -------------
     app.post('/addClass' , async (req , res) => {
       const classData = req.body ;
       const addClass = await classesCollection.insertOne(classData) ;
@@ -192,6 +194,7 @@ async function run() {
       res.send(result) ;
     })
 
+    // to update the school Info -------------------
     app.put('/updateSchool' , async (req , res) => {
       const {id} = req.query ;
       const updatedData = req.body ;
@@ -237,6 +240,7 @@ async function run() {
       }
     })
 
+    // to update the schoolJoining Status ----------
     app.patch('/updateSchoolJoinStatus' , async (req , res) => {
       const {id , schoolJoiningStatus} = req.body ;
       const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
@@ -258,6 +262,7 @@ async function run() {
       }
     })
     
+    // to update the gradeJoining Status ----------
     app.patch('/updateGradeJoinStatus' , async (req , res) => {
       const {id , gradeJoiningStatus} = req.body ;
       const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
@@ -279,6 +284,7 @@ async function run() {
       }
     })
 
+    // to changed the all status to pending ----------
     app.patch('/changeAllJoinStatusP' , async (req , res) => {
       const {id} = req.body ;
       const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { schoolJoiningStatus : 'pending' , gradeJoiningStatus : 'pending' , isjoined : false } }) ;
