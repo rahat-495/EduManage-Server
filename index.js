@@ -241,14 +241,17 @@ async function run() {
       const {id , schoolJoiningStatus} = req.body ;
       const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
       if(!addmissionData?.isjoined){
-        // if(addmissionData?.gradeJoiningStatus === 'accepted' && addmissionData?.schoolJoiningStatus === 'accepted'){
-        //   await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
-        // }
-        // if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
-        //   await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
-        // }
+        if(schoolJoiningStatus === 'accepted' && addmissionData?.gradeJoiningStatus === 'accepted'){
+          await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+        }
+        if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
+          await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
+        }
         const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { schoolJoiningStatus } }) ;
         return res.send(result) ;
+      }
+      else if(schoolJoiningStatus === addmissionData?.schoolJoiningStatus){
+        return res.send({message : "You Already Accept Him !" , status : 'warning'}) ;
       }
       else{
         return res.send({message : "You Can't Accept Now !" , status : 'error'}) ;
@@ -258,13 +261,28 @@ async function run() {
     app.patch('/updateGradeJoinStatus' , async (req , res) => {
       const {id , gradeJoiningStatus} = req.body ;
       const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
-      if(addmissionData?.gradeJoiningStatus !== 'accepted' || addmissionData?.schoolJoiningStatus !== 'accepted'){
+      if(!addmissionData?.isjoined){
+        if(gradeJoiningStatus === 'accepted' && addmissionData?.schoolJoiningStatus === 'accepted'){
+          await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+        }
+        if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
+          await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
+        }
         const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { gradeJoiningStatus } }) ;
         return res.send(result) ;
       }
-      else{
-        return res.send({message : "You Can't Accept Now !" , status : 'error'}) ;
+      else if(gradeJoiningStatus === addmissionData?.gradeJoiningStatus){
+        return res.send({message : "You Already Accept Him !" , status : 'warning'}) ;
       }
+      else{
+        return res.send({message : "Hi already joined one !" , status : 'error'}) ;
+      }
+    })
+
+    app.patch('/changeAllJoinStatusP' , async (req , res) => {
+      const {id} = req.body ;
+      const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { schoolJoiningStatus : 'pending' , gradeJoiningStatus : 'pending' , isjoined : false } }) ;
+      res.send(result) ;
     })
 
     // Send a ping to confirm a successful connection
