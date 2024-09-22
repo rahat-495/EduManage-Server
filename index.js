@@ -37,6 +37,7 @@ async function run() {
     const schoolsCollection = client.db("EduManage").collection("schools") ;
     const classesCollection = client.db("EduManage").collection("classes") ;
     const addmissionsCollection = client.db("EduManage").collection("addmissions") ;
+    const studentsCollection = client.db("EduManage").collection("students") ;
 
     app.get('/yourSchools' , async (req , res) => {
       const {email} = req.query ;
@@ -152,6 +153,15 @@ async function run() {
       res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
     })
 
+    // to get the all students info -----------
+    app.get('/allStudents' , async (req , res) => {
+      const {email} = req.query ;
+      const schoolsData = await schoolsCollection.find({email}).toArray() ;
+      const schoolsId = schoolsData?.map((school) => school?._id.toHexString()) ;
+      const allStudents = await studentsCollection.find({ schoolId : { $in : schoolsId } }).toArray() ;
+      res.send(allStudents) ;
+    })
+
     // to adding schools ----------------------
     app.post('/addSchool' , async (req , res) => {
         const data = req.body ;
@@ -244,9 +254,13 @@ async function run() {
     app.patch('/updateSchoolJoinStatus' , async (req , res) => {
       const {id , schoolJoiningStatus} = req.body ;
       const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      const isStudentAxist = await studentsCollection.findOne({studentEmail : addmissionData?.studentEmail}) ;
       if(!addmissionData?.isjoined){
         if(schoolJoiningStatus === 'accepted' && addmissionData?.gradeJoiningStatus === 'accepted'){
           await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+          if(!isStudentAxist?.studentEmail){
+            await studentsCollection.insertOne({ ...addmissionData , schoolJoiningStatus : true , gradeJoiningStatus : true , isjoined : true , date : new Date().toDateString() , filteringDate : new Date().toLocaleDateString() })
+          }
         }
         if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
           await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
@@ -266,9 +280,13 @@ async function run() {
     app.patch('/updateGradeJoinStatus' , async (req , res) => {
       const {id , gradeJoiningStatus} = req.body ;
       const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      const isStudentAxist = await studentsCollection.findOne({studentEmail : addmissionData?.studentEmail}) ;
       if(!addmissionData?.isjoined){
         if(gradeJoiningStatus === 'accepted' && addmissionData?.schoolJoiningStatus === 'accepted'){
           await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+          if(!isStudentAxist?.studentEmail){
+            await studentsCollection.insertOne({ ...addmissionData , schoolJoiningStatus : true , gradeJoiningStatus : true , isjoined : true , date : new Date().toDateString() , filteringDate : new Date().toLocaleDateString() })
+          }
         }
         if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
           await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
