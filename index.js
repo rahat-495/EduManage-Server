@@ -181,6 +181,9 @@ async function run() {
     app.post('/addSchool' , async (req , res) => {
         const data = req.body ;
         const result = await schoolsCollection.insertOne(data) ;
+        const userData = await usersCollection.findOne({email : data?.email}) ;
+        userData?.schools?.push(result?.insertedId.toString());
+        await usersCollection.updateOne({email : data?.email} , { $set : { schools : userData?.school } });
         res.send(result) ;
     })
 
@@ -192,7 +195,10 @@ async function run() {
       const updatedSchool = await schoolsCollection.findOne({_id : new  ObjectId(classData?.schoolId)})
       updatedSchool?.classes?.push(classId) ;
       updatedSchool?.availableGrades?.push(classData?.gradeNumber) ;
-      await schoolsCollection.updateOne({_id : new  ObjectId(classData?.schoolId)} , { $set : { classes :  updatedSchool?.classes , availableGrades : updatedSchool?.availableGrades } })
+      await schoolsCollection.updateOne({_id : new  ObjectId(classData?.schoolId)} , { $set : { classes :  updatedSchool?.classes , availableGrades : updatedSchool?.availableGrades } }) ;
+      const userData = await usersCollection.findOne({email : classData?.email}) ;
+      userData?.classes?.push(result?.insertedId.toString());
+      await usersCollection.updateOne({email : data?.email} , { $set : { classes : userData?.classes } });
       res.send(addClass) ;
     })
 
@@ -281,6 +287,7 @@ async function run() {
         if(!addmissionData?.isjoined){
           if(schoolJoiningStatus === 'accepted' && addmissionData?.gradeJoiningStatus === 'accepted'){
             await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+            await usersCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
             if(!isStudentAxist?.studentEmail){
               await studentsCollection.insertOne({ ...addmissionData , schoolJoiningStatus : true , gradeJoiningStatus : true , isjoined : true , date : new Date().toDateString() , filteringDate : new Date().toLocaleDateString() })
             }
@@ -316,6 +323,7 @@ async function run() {
         if(!addmissionData?.isjoined){
           if(gradeJoiningStatus === 'accepted' && addmissionData?.schoolJoiningStatus === 'accepted'){
             await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+            await usersCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
             if(!isStudentAxist?.studentEmail){
               await studentsCollection.insertOne({ ...addmissionData , schoolJoiningStatus : true , gradeJoiningStatus : true , isjoined : true , date : new Date().toDateString() , filteringDate : new Date().toLocaleDateString() })
             }
