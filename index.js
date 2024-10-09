@@ -39,6 +39,14 @@ async function run() {
     const addmissionsCollection = client.db("EduManage").collection("addmissions") ;
     const studentsCollection = client.db("EduManage").collection("students") ;
 
+    // to get the current user details -------------
+    app.get('/userDetails' , async (req , res) => {
+      const token = req?.cookies?.token ;
+      const {email} = req.query ;
+      const user = await usersCollection.findOne({email}) ;
+      return res.send(user) ;
+    })
+
     app.get('/yourSchools' , async (req , res) => {
       const {email} = req.query ;
       const result = await schoolsCollection.find({email}).toArray() ;
@@ -224,11 +232,13 @@ async function run() {
       const data = req.body ;
       const isAxist = await usersCollection.findOne({email : data?.email}) ;
       if(!isAxist){
-        const user = await usersCollection.insertOne(data) ;
+        const result = await usersCollection.insertOne(data) ;
+        const user = await usersCollection.findOne({_id : result?.insertedId}) ;
         return res.send(user) ;
       }
       else{
-        return res.send({message : "Already Axist"}) ;
+        const user = await usersCollection.findOne({_id : new ObjectId(isAxist?._id)}) ;
+        return res.send(user) ;
       }
     })
 
