@@ -10,6 +10,10 @@ const getAllSchool = require('../Controllers/getAllSchool');
 const getGradesData = require('../Controllers/getGradesData');
 const getAddmissionsData = require('../Controllers/getAddmissionsData');
 const getCurrentAddissionFormData = require('../Controllers/getCurrentAddissionFormData');
+const getSchoolsAndGradesAddReqs = require('../Controllers/getSchoolsAndGradesAddReqs');
+const getStudentAddmissionInfo = require('../Controllers/getStudentAddmissionInfo');
+const getJoinedStudentInfo = require('../Controllers/getJoinedStudentInfo');
+const getAllStudents = require('../Controllers/getAllStudents');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -22,5 +26,9 @@ router.get('/allSchools' , getAllSchool) // to get the all schools data for show
 router.get('/classesData' , getGradesData) // to get the classes names ----------
 router.get('/addmissionsData' , getAddmissionsData) // to get the all personal addmissions ----------
 router.get('/currentAddissionFormData' , getCurrentAddissionFormData) // to get the current Addmissional form data ----------
+router.get('/schoolsAndGradesAddReqs' , getSchoolsAndGradesAddReqs) // to get the all schools and grades addmissions reqs ----------
+router.get('/studentAddmissionInfo' , getStudentAddmissionInfo) // to get the details a addmission info ----------
+router.get('/allStudents' , getAllStudents) // to get the all students info ----------
+router.get('/joinedStudentInfo' , getJoinedStudentInfo) // to get the joined student info ----------
 
 module.exports = router;

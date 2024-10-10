@@ -114,40 +114,38 @@ async function run() {
     // })
 
     // to get the all schools and grades addmissions reqs ----
-    app.get('/schoolsAndGradesAddReqs' , async (req , res) => {
-      const {email} = req.query ;
-      const schoolData = await schoolsCollection.find({email}).toArray() ;
-      const gradesData = await classesCollection.find({email}).toArray() ;
-      const schoolId = schoolData.map((data) => data?._id.toString()) ;
-      // const gradesId = gradesData.map((data) => data?._id.toString()) ;
-      const school = await addmissionsCollection.find({ schoolId: { $in: schoolId } }).toArray() ;
-      // const grades = await addmissionsCollection.find({ grade: { $in: gradesId } }).toArray() ;
-      res.send(school) ;
-    })
+    // app.get('/schoolsAndGradesAddReqs' , async (req , res) => {
+    //   const {email} = req.query ;
+    //   const schoolData = await schoolsCollection.find({email}).toArray() ;
+    //   const gradesData = await classesCollection.find({email}).toArray() ;
+    //   const schoolId = schoolData.map((data) => data?._id.toString()) ;
+    //   const school = await addmissionsCollection.find({ schoolId: { $in: schoolId } }).toArray() ;
+    //   res.send(school) ;
+    // })
 
     // to get the details a addmission info ---------
-    app.get('/studentAddmissionInfo' , async (req , res) => {
-      const {id} = req.query ;
-      const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
-      const gradeData = await classesCollection.findOne({_id : new ObjectId(result?.grade?.toHexString())}) ;
-      res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
-    })
+    // app.get('/studentAddmissionInfo' , async (req , res) => {
+    //   const {id} = req.query ;
+    //   const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+    //   const gradeData = await classesCollection.findOne({_id : new ObjectId(result?.grade?.toHexString())}) ;
+    //   res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
+    // })
     
     // to get the all students info -----------
-    app.get('/allStudents' , async (req , res) => {
-      const {email} = req.query ;
-      const schoolsData = await schoolsCollection.find({email}).toArray() ;
-      const schoolsId = schoolsData?.map((school) => school?._id.toHexString()) ;
-      const allStudents = await studentsCollection.find({ schoolId : { $in : schoolsId } }).toArray() ;
-      res.send(allStudents) ;
-    })
+    // app.get('/allStudents' , async (req , res) => {
+    //   const {email} = req.query ;
+    //   const schoolsData = await schoolsCollection.find({email}).toArray() ;
+    //   const schoolsId = schoolsData?.map((school) => school?._id.toHexString()) ;
+    //   const allStudents = await studentsCollection.find({ schoolId : { $in : schoolsId } }).toArray() ;
+    //   res.send(allStudents) ;
+    // })
     
     // to get the joined student info ---------
-    app.get('/joinedStudentInfo' , async (req , res) => {
-      const {id} = req.query ;
-      const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
-      res.send(result) ;
-    })
+    // app.get('/joinedStudentInfo' , async (req , res) => {
+    //   const {id} = req.query ;
+    //   const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+    //   res.send(result) ;
+    // })
 
     // to adding schools ----------------------
     app.post('/addSchool' , async (req , res) => {
