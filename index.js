@@ -1,5 +1,7 @@
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { default: router } = require('./Routes/routes');
+const connectDB = require('./Config/connectDB');
 const express = require('express');
 const cors = require('cors');
 const port = process.env.PORT || 5555 ;
@@ -82,7 +84,7 @@ async function run() {
     app.get('/viewClasses' , async (req , res) => {
       const {id} = req.query ;
       const school = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
-      const classes = school?.classes?.map((classId) => new ObjectId(classId))
+      const classes = school?.classes?.map((classId) => new ObjectId(classId?.toHexString()))
       const result = await classesCollection.find({_id : {$in : classes}}).toArray() ;
       res.send(result) ;
     })
@@ -104,7 +106,7 @@ async function run() {
     app.get('/classesData' , async (req , res) => {
       const {schoolId} = req.query ;
       if(schoolId){
-        const school  = await schoolsCollection.findOne({_id : new ObjectId(schoolId)}) ;
+        const school  = await schoolsCollection.findOne({_id : new ObjectId(schoolId?.toHexString())}) ;
         const classesId = school?.classes?.map((id) => new ObjectId(id)) ;
         const classes = await classesCollection.find({ _id : { $in : classesId } }).toArray() ;
         res.send(classes) ;
@@ -121,7 +123,7 @@ async function run() {
     // to get the selected schools grades ---------
     app.get('/gradesInfo' , async (req , res) => {
       const {schoolId} = req.query ;
-      const schooldata = await schoolsCollection.findOne({_id : new ObjectId(schoolId)}) ;
+      const schooldata = await schoolsCollection.findOne({_id : new ObjectId(schoolId?.toHexString())}) ;
       const gradesId = schooldata?.classes?.map((id) => new ObjectId(id)) ;
       const gradesData = await classesCollection.find({_id : { $in : gradesId }}).sort({ gradeNumber : -1 }).toArray() ;
       res.send(gradesData) ;
@@ -157,7 +159,7 @@ async function run() {
     app.get('/studentAddmissionInfo' , async (req , res) => {
       const {id} = req.query ;
       const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
-      const gradeData = await classesCollection.findOne({_id : new ObjectId(result?.grade)}) ;
+      const gradeData = await classesCollection.findOne({_id : new ObjectId(result?.grade?.toHexString())}) ;
       res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
     })
     
@@ -205,7 +207,7 @@ async function run() {
     // to post the addmission request --------------
     app.post('/reqForAddmission' , async (req , res) => {
       const addmissionData = req.body ;
-      const {gradeNumber} = await classesCollection.findOne({_id : new ObjectId(addmissionData?.grade)}) ;
+      const {gradeNumber} = await classesCollection.findOne({_id : new ObjectId(addmissionData?.grade?.toHexString())}) ;
       addmissionData.gradeNumber = gradeNumber ;
       const isAxist = await addmissionsCollection.findOne({studentEmail : addmissionData?.studentEmail}) ;
       if(addmissionData?.schoolId !== isAxist?.schoolId){
@@ -243,7 +245,7 @@ async function run() {
         return res.send(user) ;
       }
       else{
-        const user = await usersCollection.findOne({_id : new ObjectId(isAxist?._id)}) ;
+        const user = await usersCollection.findOne({_id : new ObjectId(isAxist?._id?.toHexString())}) ;
         return res.send(user) ;
       }
     })
@@ -280,22 +282,22 @@ async function run() {
     // to update the schoolJoining Status ----------
     app.patch('/updateSchoolJoinStatus' , async (req , res) => {
       const {id , schoolJoiningStatus} = req.body ;
-      const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id?.toHexString())}) ;
       const isStudentAxist = await studentsCollection.findOne({studentEmail : addmissionData?.studentEmail}) ;
       const isJoinedASchool = await addmissionsCollection.findOne({ $and : [ {studentEmail : addmissionData?.studentEmail} , {isjoined : true} ] }) ;
       if(!isJoinedASchool?.isjoined){
         if(!addmissionData?.isjoined){
           if(schoolJoiningStatus === 'accepted' && addmissionData?.gradeJoiningStatus === 'accepted'){
-            await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
-            await usersCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+            await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { isjoined : true } }) ;
+            await usersCollection.updateOne({studentUid : addmissionData?.studentUid?.toHexString()} , { $set : { isjoined : addmissionData?.schoolId , isjoinedModalSeen : false } }) ;
             if(!isStudentAxist?.studentEmail){
               await studentsCollection.insertOne({ ...addmissionData , schoolJoiningStatus : true , gradeJoiningStatus : true , isjoined : true , date : new Date().toDateString() , filteringDate : new Date().toLocaleDateString() })
             }
           }
           if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
-            await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
+            await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { isjoined : false } }) ;
           }
-          const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { schoolJoiningStatus } }) ;
+          const result = await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { schoolJoiningStatus } }) ;
           return res.send(result) ;
         }
         else if(schoolJoiningStatus === addmissionData?.schoolJoiningStatus){
@@ -316,22 +318,22 @@ async function run() {
     // to update the gradeJoining Status ----------
     app.patch('/updateGradeJoinStatus' , async (req , res) => {
       const {id , gradeJoiningStatus} = req.body ;
-      const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+      const addmissionData = await addmissionsCollection.findOne({_id : new ObjectId(id?.toHexString())}) ;
       const isStudentAxist = await studentsCollection.findOne({studentEmail : addmissionData?.studentEmail}) ;
       const isJoinedASchool = await addmissionsCollection.findOne({ $and : [ {studentEmail : addmissionData?.studentEmail} , {isjoined : true} ] }) ;
       if(!isJoinedASchool?.isjoined){
         if(!addmissionData?.isjoined){
           if(gradeJoiningStatus === 'accepted' && addmissionData?.schoolJoiningStatus === 'accepted'){
-            await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
-            await usersCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : true } }) ;
+            await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { isjoined : true } }) ;
+            await usersCollection.updateOne({studentUid : addmissionData?.studentUid?.toHexString()} , { $set : { isjoined : addmissionData?.schoolId , isjoinedModalSeen : false } }) ;
             if(!isStudentAxist?.studentEmail){
               await studentsCollection.insertOne({ ...addmissionData , schoolJoiningStatus : true , gradeJoiningStatus : true , isjoined : true , date : new Date().toDateString() , filteringDate : new Date().toLocaleDateString() })
             }
           }
           if(addmissionData?.gradeJoiningStatus === 'rejected' && addmissionData?.schoolJoiningStatus === 'rejected'){
-            await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { isjoined : false } }) ;
+            await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { isjoined : false } }) ;
           }
-          const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { gradeJoiningStatus } }) ;
+          const result = await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { gradeJoiningStatus } }) ;
           return res.send(result) ;
         }
         else if(gradeJoiningStatus === addmissionData?.gradeJoiningStatus){
@@ -349,7 +351,7 @@ async function run() {
     // to changed the all status to pending ----------
     app.patch('/changeAllJoinStatusP' , async (req , res) => {
       const {id} = req.body ;
-      const result = await addmissionsCollection.updateOne({_id : new ObjectId(id)} , { $set : { schoolJoiningStatus : 'pending' , gradeJoiningStatus : 'pending' , isjoined : false } }) ;
+      const result = await addmissionsCollection.updateOne({_id : new ObjectId(id?.toHexString())} , { $set : { schoolJoiningStatus : 'pending' , gradeJoiningStatus : 'pending' , isjoined : false } }) ;
       res.send(result) ;
     })
 
@@ -363,6 +365,9 @@ async function run() {
 }
 run().catch(console.dir);
 
+
+connectDB() ;
+app.use('/api' , router)
 
 app.get('/' , (req , res) => {
     res.send("school server is running !")
