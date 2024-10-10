@@ -1,9 +1,9 @@
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const { default: router } = require('./Routes/routes');
 const connectDB = require('./Config/connectDB');
 const express = require('express');
 const cors = require('cors');
+const router = require('./Routes/routes');
 const port = process.env.PORT || 5555 ;
 const app = express() ;
 
