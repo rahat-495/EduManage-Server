@@ -14,6 +14,16 @@ const getSchoolsAndGradesAddReqs = require('../Controllers/getSchoolsAndGradesAd
 const getStudentAddmissionInfo = require('../Controllers/getStudentAddmissionInfo');
 const getJoinedStudentInfo = require('../Controllers/getJoinedStudentInfo');
 const getAllStudents = require('../Controllers/getAllStudents');
+const addSchool = require('../Controllers/addSchool');
+const addGrades = require('../Controllers/addGrades');
+const reqForAddmission = require('../Controllers/reqForAddmission');
+const updateAddmission = require('../Controllers/updateAddmission');
+const updateSchool = require('../Controllers/updateSchool');
+const createUser = require('../Controllers/createUser');
+const updateDevice = require('../Controllers/updateDevice');
+const updateSchoolJoinStatus = require('../Controllers/updateSchoolJoinStatus');
+const updateGradeJoinStatus = require('../Controllers/updateGradeJoinStatus');
+const changeAllJoinStatusP = require('../Controllers/changeAllJoinStatusP');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -30,5 +40,18 @@ router.get('/schoolsAndGradesAddReqs' , getSchoolsAndGradesAddReqs) // to get th
 router.get('/studentAddmissionInfo' , getStudentAddmissionInfo) // to get the details a addmission info ----------
 router.get('/allStudents' , getAllStudents) // to get the all students info ----------
 router.get('/joinedStudentInfo' , getJoinedStudentInfo) // to get the joined student info ----------
+
+router.post('/addSchool' , addSchool) // to creating Schools ----------
+router.post('/addClass' , addGrades) // to creating Grades ----------
+router.post('/reqForAddmission' , reqForAddmission) // to create the addmission request ----------
+
+router.put('/updateAddmission' , updateAddmission) // to update the addmission data ----------
+router.put('/updateSchool' , updateSchool) // to update the school Info ----------
+router.put('/createUser' , createUser) // to Create a user and save to db ----------
+router.put('/updateDevice' , updateDevice) // update user device info or data ----------
+
+router.patch('/updateSchoolJoinStatus' , updateSchoolJoinStatus) // to update the schoolJoining Status ----------
+router.patch('/updateGradeJoinStatus' , updateGradeJoinStatus) // to update the gradeJoining Status ----------
+router.patch('/changeAllJoinStatusP' , changeAllJoinStatusP) // to changed the all status to pending ----------
 
 module.exports = router;

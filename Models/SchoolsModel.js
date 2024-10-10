@@ -36,7 +36,7 @@ const SchoolSchema = new mongoose.Schema({
     },
     userId : {
         type : String ,
-        unique : true ,
+        unique : false ,
         required : [true , "Provide userId"] ,
     },
     userName : {

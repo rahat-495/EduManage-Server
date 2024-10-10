@@ -1,14 +1,15 @@
 
 const AddmissionsModel = require("../Models/AddmissionsModel");
 
-const getCurrentAddissionFormData = async (req , res) => {
+const updateAddmission = async (req , res) => {
     try {
         const {id} = req.query ;
-        const result = await AddmissionsModel.findOne({_id : id}) ;
+        const data = req.body ;
+        const result = await AddmissionsModel.updateOne({_id : id} , { $set : { ...data } })
         res.send(result) ;
     } catch (error) {
         return res.send({message : error.message || error , error : true}) ;
     }
 }
 
-module.exports = getCurrentAddissionFormData ;
+module.exports = updateAddmission ;

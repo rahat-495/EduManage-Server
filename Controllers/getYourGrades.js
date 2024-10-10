@@ -4,7 +4,7 @@ const GradesModel = require("../Models/GradesModel");
 const getYourGrades = async (req , res) => {
     try {
         const {email} = req.query ;
-        const result = await GradesModel.find({email}).toArray() ;
+        const result = await GradesModel.find({email}) ;
         res.send(result) ;
     } catch (error) {
         return res.send({message : error.message || error , error : true}) ;
