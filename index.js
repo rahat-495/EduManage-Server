@@ -89,45 +89,29 @@ async function run() {
     // })
 
     // to get the classes names -------------------
-    app.get('/classesData' , async (req , res) => {
-      const {schoolId} = req.query ;
-      if(schoolId){
-        const school  = await schoolsCollection.findOne({_id : new ObjectId(schoolId?.toHexString())}) ;
-        const classesId = school?.classes?.map((id) => new ObjectId(id)) ;
-        const classes = await classesCollection.find({ _id : { $in : classesId } }).toArray() ;
-        res.send(classes) ;
-      }
-    })
-
-    // to get the single school data --------------
-    app.get('/schoolData' , async (req , res) => {
-      const {id} = req.query ;
-      const result = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
-      res.send(result) ;
-    })
-
-    // to get the selected schools grades ---------
-    app.get('/gradesInfo' , async (req , res) => {
-      const {schoolId} = req.query ;
-      const schooldata = await schoolsCollection.findOne({_id : new ObjectId(schoolId?.toHexString())}) ;
-      const gradesId = schooldata?.classes?.map((id) => new ObjectId(id)) ;
-      const gradesData = await classesCollection.find({_id : { $in : gradesId }}).sort({ gradeNumber : -1 }).toArray() ;
-      res.send(gradesData) ;
-    })
+    // app.get('/classesData' , async (req , res) => {
+    //   const {schoolId} = req.query ;
+    //   if(schoolId){
+    //     const school  = await schoolsCollection.findOne({_id : new ObjectId(schoolId?.toHexString())}) ;
+    //     const classesId = school?.classes?.map((id) => new ObjectId(id)) ;
+    //     const classes = await classesCollection.find({ _id : { $in : classesId } }).toArray() ;
+    //     res.send(classes) ;
+    //   }
+    // })
 
     // to get the all personal addmissions --------
-    app.get('/addmissionsData' , async (req , res) => {
-      const {uid} = req.query ;
-      const result = await addmissionsCollection.find({studentUid : uid}).toArray() ;
-      res.send(result) ;
-    })
+    // app.get('/addmissionsData' , async (req , res) => {
+    //   const {uid} = req.query ;
+    //   const result = await addmissionsCollection.find({studentUid : uid}).toArray() ;
+    //   res.send(result) ;
+    // })
 
     // to get the current Addissional form data -------
-    app.get('/currentAddissionFormData' , async (req , res) => {
-      const {id} = req.query ;
-      const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
-      res.send(result) ;
-    })
+    // app.get('/currentAddissionFormData' , async (req , res) => {
+    //   const {id} = req.query ;
+    //   const result = await addmissionsCollection.findOne({_id : new ObjectId(id)}) ;
+    //   res.send(result) ;
+    // })
 
     // to get the all schools and grades addmissions reqs ----
     app.get('/schoolsAndGradesAddReqs' , async (req , res) => {

@@ -7,6 +7,9 @@ const getSchoolDetails = require('../Controllers/getSchoolDetails');
 const getSubjects = require('../Controllers/getSubjects');
 const viewGrades = require('../Controllers/viewGrades');
 const getAllSchool = require('../Controllers/getAllSchool');
+const getGradesData = require('../Controllers/getGradesData');
+const getAddmissionsData = require('../Controllers/getAddmissionsData');
+const getCurrentAddissionFormData = require('../Controllers/getCurrentAddissionFormData');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -16,5 +19,8 @@ router.get('/schoolsDetails' , getSchoolDetails) // to get the school details --
 router.get('/subjects' , getSubjects) // to get subjects ----------
 router.get('/viewClasses' , viewGrades) // to get classes for use school ----------
 router.get('/allSchools' , getAllSchool) // to get the all schools data for show schools ----------
+router.get('/classesData' , getGradesData) // to get the classes names ----------
+router.get('/addmissionsData' , getAddmissionsData) // to get the all personal addmissions ----------
+router.get('/currentAddissionFormData' , getCurrentAddissionFormData) // to get the current Addmissional form data ----------
 
 module.exports = router;
