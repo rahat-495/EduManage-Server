@@ -42,65 +42,51 @@ async function run() {
     const studentsCollection = client.db("EduManage").collection("students") ;
 
     // to get the current user details -------------
-    app.get('/userDetails' , async (req , res) => {
-      const token = req?.cookies?.token ;
-      const {email} = req.query ;
-      const user = await usersCollection.findOne({email}) ;
-      return res.send(user) ;
-    })
+    // app.get('/userDetails' , async (req , res) => {
+    //   const token = req?.cookies?.token ;
+    //   const {email} = req.query ;
+    //   const user = await usersCollection.findOne({email}) ;
+    //   return res.send(user) ;
+    // })
 
-    app.get('/yourSchools' , async (req , res) => {
-      const {email} = req.query ;
-      const result = await schoolsCollection.find({email}).toArray() ;
-      res.send(result) ;
-    })
+    // app.get('/yourSchools' , async (req , res) => {
+    //   const {email} = req.query ;
+    //   const result = await schoolsCollection.find({email}).toArray() ;
+    //   res.send(result) ;
+    // })
 
-    app.get('/yourClasses' , async (req , res) => {
-      const {email} = req.query ;
-      const result = await classesCollection.find({email}).toArray() ;
-      res.send(result) ;
-    })
+    // app.get('/yourClasses' , async (req , res) => {
+    //   const {email} = req.query ;
+    //   const result = await classesCollection.find({email}).toArray() ;
+    //   res.send(result) ;
+    // })
 
-    app.get('/schoolsDetails' , async (req , res) => {
-      const {id} = req.query ;
-      const result = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
-      res.send(result) ;
-    })
+    // app.get('/schoolsDetails' , async (req , res) => {
+    //   const {id} = req.query ;
+    //   const result = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
+    //   res.send(result) ;
+    // })
 
-    app.get('/subjects' , async (req , res) => {
-      const {id} = req.query ;
-      const result = await classesCollection.findOne({_id : new ObjectId(id)}) ;
-      res.send(result) ;
-    })
-
-    // to get user data for useing profile -------------
-    app.get('/userData' , async (req , res) => {
-      const {email} = req.query ;
-      const result = await usersCollection.findOne({email}) ;
-      res.send(result) ;
-    })
+    // app.get('/subjects' , async (req , res) => {
+    //   const {id} = req.query ;
+    //   const result = await classesCollection.findOne({_id : new ObjectId(id)}) ;
+    //   res.send(result) ;
+    // })
 
     // to get classes for use school -------------
-    app.get('/viewClasses' , async (req , res) => {
-      const {id} = req.query ;
-      const school = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
-      const classes = school?.classes?.map((classId) => new ObjectId(classId?.toHexString()))
-      const result = await classesCollection.find({_id : {$in : classes}}).toArray() ;
-      res.send(result) ;
-    })
-
-    // to get the user role ----------------------
-    app.get('/userRole' , async (req , res) => {
-      const {email} = req.query ;
-      const userData = await usersCollection.findOne({email}) ;
-      res.send({role : userData?.role}) ;
-    })
+    // app.get('/viewClasses' , async (req , res) => {
+    //   const {id} = req.query ;
+    //   const school = await schoolsCollection.findOne({_id : new ObjectId(id)}) ;
+    //   const classes = school?.grades?.map((classId) => new ObjectId(classId?.toHexString()))
+    //   const result = await classesCollection.find({_id : {$in : classes}}).toArray() ;
+    //   res.send(result) ;
+    // })
 
     // to get the all schools data for show schools -----------
-    app.get('/allSchools' , async (req , res) => {
-      const result = await schoolsCollection.find().toArray() ;
-      res.send(result) ;
-    })
+    // app.get('/allSchools' , async (req , res) => {
+    //   const result = await schoolsCollection.find().toArray() ;
+    //   res.send(result) ;
+    // })
 
     // to get the classes names -------------------
     app.get('/classesData' , async (req , res) => {
