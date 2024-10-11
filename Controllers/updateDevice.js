@@ -13,19 +13,19 @@ const updateDevice = async (req , res) => {
             const date = userData?.devicesInfo?.find((os) => os?.loginDate?.includes(data?.devicesInfo?.loginDate) && os) ;
             
             if(date?.loginDate !== data?.devicesInfo?.loginDate){
-            if(os?.deviceName === data?.devicesInfo?.deviceName){
-                os.loginDate = data?.devicesInfo?.loginDate ;
-                const result = await UsersModel.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
-                return res.send(result) ;
+                if(os?.deviceName === data?.devicesInfo?.deviceName){
+                    os.loginDate = data?.devicesInfo?.loginDate ;
+                    const result = await UsersModel.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
+                    return res.send(result) ;
+                }
+                else{
+                    userData?.devicesInfo?.push(data?.devicesInfo)
+                    const result = await UsersModel.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
+                    return res.send(result) ;
+                }
             }
             else{
-                userData?.devicesInfo?.push(data?.devicesInfo)
-                const result = await UsersModel.updateOne({email : data?.email} , { $set : { devicesInfo : userData?.devicesInfo } }) ;
-                return res.send(result) ;
-            }
-            }
-            else{
-            return res.send({success : false , message : "Can't update !"}) ;
+                return res.send({success : false , message : "Can't update !"}) ;
             }
 
         }
