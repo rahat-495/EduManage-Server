@@ -12,7 +12,7 @@ const gradeSchema = new mongoose.Schema({
         required : [true , "provide grade name"] ,
     },
     schoolId : {
-        type : mongoose.Schema.ObjectId ,
+        type : String ,
         required : [true , "provide schoolId"] ,
     },
     gradeNumber : {
