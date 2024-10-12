@@ -9,7 +9,6 @@ const AddmissionSchema = new mongoose.Schema({
     studentUid : {
         type : String ,
         required : [true , "provide studentUid"] ,
-        unique : true ,
     },
     studentImage : {
         default : "" ,
@@ -19,7 +18,6 @@ const AddmissionSchema = new mongoose.Schema({
     studentEmail : {
         type : String ,
         required : [true , "provide studentEmail"] ,
-        unique : true ,
     },
     studentNumber : {
         type : String ,
@@ -37,19 +35,39 @@ const AddmissionSchema = new mongoose.Schema({
         type : String ,
         required : [true , "provide motherName"] ,
     },
+    gender : {
+        type : String ,
+        required : [true , "provide gender"] ,
+    },
+    schoolName : {
+        type : String ,
+        required : [true , "provide schoolName"] ,
+    },
+    address : {
+        type : String ,
+        required : [true , "provide address"] ,
+    },
+    gradeNumber : {
+        type : String ,
+        required : [true , "provide gradeNumber"] ,
+    },
     grade : {
         type : String ,
         required : [true , "provide grade"] ,
     },
+    schoolId : {
+        type : String ,
+        required : [true , "provide schoolId"] ,
+    },
     schoolJoiningStatus : {
         type : String ,
         default : "pending" ,
-        required : [true , "provide grade"] ,
+        required : [true , "provide schoolJoiningStatus"] ,
     },
     gradeJoiningStatus : {
         type : String ,
         default : "pending" ,
-        required : [true , "provide grade"] ,
+        required : [true , "provide gradeJoiningStatus"] ,
     },
     isjoined : {
         type : Boolean ,

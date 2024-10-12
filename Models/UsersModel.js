@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
         type : Array ,
         default : [] ,
     },
+    grades : {
+        type : Array ,
+        default : [] ,
+    },
     classes : {
         type : Array ,
         default : [] ,

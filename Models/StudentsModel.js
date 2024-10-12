@@ -9,7 +9,6 @@ const StudentsSchema = new mongoose.Schema({
     studentUid : {
         type : String ,
         required : [true , "provide studentUid"] ,
-        unique : true ,
     },
     studentImage : {
         default : "" ,
@@ -19,7 +18,6 @@ const StudentsSchema = new mongoose.Schema({
     studentEmail : {
         type : String ,
         required : [true , "provide studentEmail"] ,
-        unique : true ,
     },
     studentNumber : {
         type : String ,
@@ -40,6 +38,26 @@ const StudentsSchema = new mongoose.Schema({
     grade : {
         type : String ,
         required : [true , "provide grade"] ,
+    },
+    gender : {
+        type : String ,
+        required : [true , "provide gender"] ,
+    },
+    schoolName : {
+        type : String ,
+        required : [true , "provide schoolName"] ,
+    },
+    address : {
+        type : String ,
+        required : [true , "provide address"] ,
+    },
+    gradeNumber : {
+        type : String ,
+        required : [true , "provide gradeNumber"] ,
+    },
+    schoolId : {
+        type : String ,
+        required : [true , "provide schoolId"] ,
     },
     schoolJoiningStatus : {
         type : Boolean ,

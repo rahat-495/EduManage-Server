@@ -7,7 +7,7 @@ const getGradesData = async (req , res) => {
         const {schoolId} = req.query ;
         if(schoolId){
             const school  = await SchoolsModel.findOne({_id : schoolId }) ;
-            const classesId = school?.classes?.map((id) => id) ;
+            const classesId = school?.grades?.map((id) => id) ;
             const classes = await GradesModel.find({ _id : { $in : classesId } }) ;
             res.send(classes) ;
         }

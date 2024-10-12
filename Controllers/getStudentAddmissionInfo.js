@@ -1,12 +1,13 @@
 
-const SchoolsModel = require("../Models/SchoolsModel");
+const AddmissionsModel = require("../Models/AddmissionsModel");
+const GradesModel = require("../Models/GradesModel");
 
 const getStudentAddmissionInfo = async (req , res) => {
     try {
         const {id} = req.query ;
-        const result = await addmissionsCollection.findOne({_id : id}) ;
-        const gradeData = await classesCollection.findOne({_id : result?.grade }) ;
-        res.send({...result , gradeNumber : gradeData?.gradeNumber}) ;
+        const result = await AddmissionsModel.findOne({_id : id}) ;
+        const gradeData = await GradesModel.findOne({_id : result?.grade }) ;
+        res.send({...result?._doc , gradeNumber : gradeData?.gradeNumber}) ;
     } catch (error) {
         return res.send({message : error.message || error , error : true}) ;
     }

@@ -15,8 +15,8 @@ const addGrades = async (req , res) => {
         await SchoolsModel.updateOne({_id : classData?.schoolId} , { $set : { grades :  updatedSchool?.grades , availableGrades : updatedSchool?.availableGrades } }) ;
 
         const userData = await UsersModel.findOne({email : classData?.email}) ;
-        userData?.schools?.push(classId?._id);
-        const update = await UsersModel.updateOne({email : userData?.email} , { $set : { classes : userData?.schools } });
+        userData?.classes?.push(classId?._id);
+        await UsersModel.updateOne({email : userData?.email} , { $set : { classes : userData?.classes } });
 
         res.send(addClass) ;
     } catch (error) {

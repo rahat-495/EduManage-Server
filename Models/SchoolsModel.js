@@ -36,7 +36,6 @@ const SchoolSchema = new mongoose.Schema({
     },
     userId : {
         type : String ,
-        unique : false ,
         required : [true , "Provide userId"] ,
     },
     userName : {
@@ -45,7 +44,6 @@ const SchoolSchema = new mongoose.Schema({
     },
     email : {
         type : String ,
-        unique : true ,
         required : [true , "Provide email"] ,
     },
     principalName : {
@@ -61,6 +59,10 @@ const SchoolSchema = new mongoose.Schema({
         required : [true , "Provide schoolType"] ,
     },
     grades : {
+        type : Array ,
+        default : [] ,
+    },
+    availableGrades : {
         type : Array ,
         default : [] ,
     },
