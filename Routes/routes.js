@@ -24,6 +24,7 @@ const updateDevice = require('../Controllers/updateDevice');
 const updateSchoolJoinStatus = require('../Controllers/updateSchoolJoinStatus');
 const updateGradeJoinStatus = require('../Controllers/updateGradeJoinStatus');
 const changeAllJoinStatusP = require('../Controllers/changeAllJoinStatusP');
+const updateIsSeenModal = require('../Controllers/updateIsSeenModal');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -53,5 +54,6 @@ router.put('/updateDevice' , updateDevice) // update user device info or data --
 router.patch('/updateSchoolJoinStatus' , updateSchoolJoinStatus) // to update the schoolJoining Status ----------
 router.patch('/updateGradeJoinStatus' , updateGradeJoinStatus) // to update the gradeJoining Status ----------
 router.patch('/changeAllJoinStatusP' , changeAllJoinStatusP) // to changed the all status to pending ----------
+router.patch('/updateIsSeenModal' , updateIsSeenModal) // to update the user joining modal is seen true ----------
 
 module.exports = router;
