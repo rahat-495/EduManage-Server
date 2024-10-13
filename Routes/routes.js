@@ -25,6 +25,7 @@ const updateSchoolJoinStatus = require('../Controllers/updateSchoolJoinStatus');
 const updateGradeJoinStatus = require('../Controllers/updateGradeJoinStatus');
 const changeAllJoinStatusP = require('../Controllers/changeAllJoinStatusP');
 const updateIsSeenModal = require('../Controllers/updateIsSeenModal');
+const getMyClassMates = require('../Controllers/getMyClassMates');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -41,6 +42,7 @@ router.get('/schoolsAndGradesAddReqs' , getSchoolsAndGradesAddReqs) // to get th
 router.get('/studentAddmissionInfo' , getStudentAddmissionInfo) // to get the details a addmission info ----------
 router.get('/allStudents' , getAllStudents) // to get the all students info ----------
 router.get('/joinedStudentInfo' , getJoinedStudentInfo) // to get the joined student info ----------
+router.get('/myClassMates' , getMyClassMates) // to get the joined student info ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
