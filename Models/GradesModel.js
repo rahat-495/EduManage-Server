@@ -31,6 +31,11 @@ const gradeSchema = new mongoose.Schema({
         type : Array ,
         required : [true , "provide subjectsArray"] ,
     },
+    subjectsId : {
+        default : [],
+        type : Array ,
+        required : [true , "provide subjectsId"] ,
+    },
     classTeacherName : {
         type : String ,
         required : [true , "provide classTeacherName"] ,
