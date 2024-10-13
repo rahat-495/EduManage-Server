@@ -26,6 +26,7 @@ const updateGradeJoinStatus = require('../Controllers/updateGradeJoinStatus');
 const changeAllJoinStatusP = require('../Controllers/changeAllJoinStatusP');
 const updateIsSeenModal = require('../Controllers/updateIsSeenModal');
 const getMyClassMates = require('../Controllers/getMyClassMates');
+const createJwt = require('../Controllers/createJwt');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -47,6 +48,7 @@ router.get('/myClassMates' , getMyClassMates) // to get the joined student info 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
 router.post('/reqForAddmission' , reqForAddmission) // to create the addmission request ----------
+router.post('/jwt' , createJwt) // to create json web token ----------
 
 router.put('/updateAddmission' , updateAddmission) // to update the addmission data ----------
 router.put('/updateSchool' , updateSchool) // to update the school Info ----------
