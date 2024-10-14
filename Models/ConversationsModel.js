@@ -7,10 +7,34 @@ const conversationsSchema = new mongoose.Schema({
         required : true ,
         ref : 'Users' ,
     },
+    senderName : {
+        type : String ,
+        required : true ,
+    },
+    senderEmail : {
+        type : String ,
+        required : true ,
+    },
+    senderImage : {
+        type : String ,
+        required : true ,
+    },
     receiver : {
         type : String ,
         required : true ,
         ref : 'Users' ,
+    },
+    receiverName : {
+        type : String ,
+        required : true ,
+    },
+    receiverEmail : {
+        type : String ,
+        required : true ,
+    },
+    receiverImage : {
+        type : String ,
+        required : true ,
     },
     participants : [
         { 
@@ -20,10 +44,6 @@ const conversationsSchema = new mongoose.Schema({
     ],
     lastMessage : { 
         type: String 
-    },
-    lastUpdated : { 
-        type: Date, 
-        default: Date.now 
     },
 } , {
     timestamps : true ,

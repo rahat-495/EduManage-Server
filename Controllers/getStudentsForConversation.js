@@ -9,7 +9,7 @@ const getStudentsForConversation = async (req , res) => {
         const query = new RegExp(search , "i" , "g") ;
         const userData = await UsersModel.findOne({email}) ;
         const schoolData = await SchoolsModel.findOne({ totalStudents : { $in : [userData?.studentUid] } }).select("totalStudents") ;
-        const schoolFriends = await UsersModel.find({ $and : [ {studentUid : { $in : schoolData?.totalStudents }} , {$or : [ { name : query} , { email : query } ]} ] }) ;
+        const schoolFriends = await UsersModel.find({ $and : [ {studentUid : { $in : schoolData?.totalStudents }} , {$or : [ { name : query} , { email : query } ]} , { email : { $ne : email } } ] }) ;
         return res.send(schoolFriends) ;
 
     } catch (error) {

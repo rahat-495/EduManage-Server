@@ -28,6 +28,9 @@ const updateIsSeenModal = require('../Controllers/updateIsSeenModal');
 const getMyClassMates = require('../Controllers/getMyClassMates');
 const createJwt = require('../Controllers/createJwt');
 const getStudentsForConversation = require('../Controllers/getStudentsForConversation');
+const createConversation = require('../Controllers/createConversation');
+const getConversations = require('../Controllers/getConversations');
+const getReceiverDetails = require('../Controllers/getReceiverDetails');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -46,11 +49,14 @@ router.get('/allStudents' , getAllStudents) // to get the all students info ----
 router.get('/joinedStudentInfo' , getJoinedStudentInfo) // to get the joined student info ----------
 router.get('/myClassMates' , getMyClassMates) // to get the joined student info ----------
 router.get('/studentsForConversation' , getStudentsForConversation) // to get students info for conversation ----------
+router.get('/conversations' , getConversations) // to get students conversations ----------
+router.get('/receiverDetails' , getReceiverDetails) // to get receiver Details ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
 router.post('/reqForAddmission' , reqForAddmission) // to create the addmission request ----------
 router.post('/jwt' , createJwt) // to create json web token ----------
+router.post('/conversation' , createConversation) // to create new conversation ----------
 
 router.put('/updateAddmission' , updateAddmission) // to update the addmission data ----------
 router.put('/updateSchool' , updateSchool) // to update the school Info ----------
