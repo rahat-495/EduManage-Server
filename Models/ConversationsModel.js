@@ -3,19 +3,19 @@ const mongoose = require("mongoose") ;
 
 const conversationsSchema = new mongoose.Schema({
     sender : {
-        type : mongoose.Schema.ObjectId ,
+        type : String ,
         required : true ,
-        ref : 'Students' ,
+        ref : 'Users' ,
     },
     receiver : {
-        type : mongoose.Schema.ObjectId ,
+        type : String ,
         required : true ,
-        ref : 'Students' ,
+        ref : 'Users' ,
     },
     participants : [
         { 
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: 'Students' 
+            type: String, 
+            ref: 'Users' 
         },
     ],
     lastMessage : { 
