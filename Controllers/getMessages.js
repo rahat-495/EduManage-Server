@@ -6,7 +6,7 @@ const getMessages = async (req , res) => {
     try {
         
         const {sender , receiver} = req.query ;
-        const conversationId = await ConversationsModel.findOne({ $and : [ {sender} , {receiver} ] }).select("_id") ;
+        const conversationId = await ConversationsModel.findOne({ $or : [ { $and : [ {sender} , {receiver} ] } , { $and : [ {sender : receiver} , {receiver : sender} ] } ] }).select("_id") ;
         const messages = await MessagesModel.find({conversationId}) ;
         return res.send(messages) ;
 
