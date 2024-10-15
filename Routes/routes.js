@@ -31,6 +31,8 @@ const getStudentsForConversation = require('../Controllers/getStudentsForConvers
 const createConversation = require('../Controllers/createConversation');
 const getConversations = require('../Controllers/getConversations');
 const getReceiverDetails = require('../Controllers/getReceiverDetails');
+const getMessages = require('../Controllers/getMessages');
+const createMessage = require('../Controllers/createMessage');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -51,12 +53,14 @@ router.get('/myClassMates' , getMyClassMates) // to get the joined student info 
 router.get('/studentsForConversation' , getStudentsForConversation) // to get students info for conversation ----------
 router.get('/conversations' , getConversations) // to get students conversations ----------
 router.get('/receiverDetails' , getReceiverDetails) // to get receiver Details ----------
+router.get('/messages' , getMessages) // to get receiver Details ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
 router.post('/reqForAddmission' , reqForAddmission) // to create the addmission request ----------
 router.post('/jwt' , createJwt) // to create json web token ----------
 router.post('/conversation' , createConversation) // to create new conversation ----------
+router.post('/createMessage' , createMessage) // to create new message ----------
 
 router.put('/updateAddmission' , updateAddmission) // to update the addmission data ----------
 router.put('/updateSchool' , updateSchool) // to update the school Info ----------

@@ -18,13 +18,16 @@ const messagesSchema = new mongoose.Schema({
         type : Boolean,
         default : false
     },
-    senderUid : {
-        type : '',
+    sender : {
+        type : String,
+        required : true,
+    },
+    receiver : {
+        type : String,
         required : true,
     },
     conversationId : {
-        type : mongoose.Schema.ObjectId,
-        required : true,
+        type : mongoose.Schema.Types.ObjectId,
     },
 } , {
     timestamps : true ,
