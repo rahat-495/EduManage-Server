@@ -6,7 +6,7 @@ const getConversations = async (req , res) => {
         
         const {uid} = req.query ;
         if(uid){
-            const conversations = await ConversationsModel.find({ participants : { $in : [uid] }}) ;
+            const conversations = await ConversationsModel.find({ participants : { $in : [uid] }}).sort({updatedAt : -1}) ;
             return res.send(conversations) ;
         }
 

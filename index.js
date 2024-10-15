@@ -3,8 +3,8 @@ const connectDB = require('./Config/connectDB');
 const express = require('express');
 const cors = require('cors');
 const router = require('./Routes/routes');
+const { app , server } = require('./Socket');
 const port = process.env.PORT || 5555 ;
-const app = express() ;
 
 app.use(cors({
   origin : [
@@ -24,6 +24,6 @@ app.get('/' , (req , res) => {
   res.send("school server is running !")
 })
 
-app.listen(port , () => {
+server.listen(port , () => {
   console.log(`the server is running at port ${port}`);
 })
