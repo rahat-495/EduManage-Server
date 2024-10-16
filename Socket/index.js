@@ -21,8 +21,6 @@ const io = new Server(server , {
 let users = [] ;
 
 io.on("connection" , (socket) => {
-  
-  // console.log("socket connected !" , socket?.id) ;
 
   socket.on("addUser" , (studentUid) => {
     if(studentUid){
@@ -38,7 +36,7 @@ io.on("connection" , (socket) => {
   socket.on("sendMessage" , async (message) => {
     const receiver = users.find((user) => user?.studentUid === message?.message?.receiver) ;
     const sender = users.find((user) => user?.studentUid === message?.message?.sender) ;
-    if(receiver?.socketId && sender?.socketId){
+    if(receiver?.socketId && sender?.socketId && receiver?.studentUid === message?.message?.receiver && sender?.studentUid === message?.message?.sender){
       io.to(receiver?.socketId).to(sender?.socketId).emit("getMessage" , message) ;
     }
     else{
