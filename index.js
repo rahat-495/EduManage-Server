@@ -11,6 +11,7 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:5175',
+    'http://localhost:5176',
     'https://school-management-de5a5.web.app',
     'https://school-management-de5a5.firebaseapp.com'
   ],

@@ -42,6 +42,14 @@ const conversationsSchema = new mongoose.Schema({
             ref: 'Users' 
         },
     ],
+    isSenderOnline : { 
+        type: Boolean ,
+        default : false ,
+    },
+    isReceiverOnline : { 
+        type: Boolean ,
+        default : false ,
+    },
     lastMessage : { 
         type: String 
     },

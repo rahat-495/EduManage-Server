@@ -5,7 +5,7 @@ require('dotenv').config() ;
 const connectDB = async () => {
     try {
         
-        await mongoose.connect(`mongodb+srv://rahat495:${process.env.DB_PASS}@cluster0.w0yjihf.mongodb.net/EduManage?appName=Cluster0`) ;
+        await mongoose.connect(`mongodb+srv://rahatPersonal:${process.env.DB_PASS}@cluster0.j5p6m.mongodb.net/EduManage?appName=Cluster0`) ;
         const connection = mongoose.connection ;
 
         connection.on('connected' , () => {
