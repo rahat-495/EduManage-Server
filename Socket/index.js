@@ -18,6 +18,7 @@ const io = new Server(server , {
         'https://school-management-de5a5.firebaseapp.com'
       ],
       credentials : true ,
+      methods: ["GET", "POST"],
     }
 })
 
