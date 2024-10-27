@@ -8,8 +8,14 @@ const getStudentsForConversation = async (req , res) => {
         const {email , search} = req.query ;
         const query = new RegExp(search , "i" , "g") ;
         const userData = await UsersModel.findOne({email}) ;
-        const schoolData = await SchoolsModel.findOne({ totalStudents : { $in : [userData?.studentUid] } }).select("totalStudents") ;
-        const schoolFriends = await UsersModel.find({ $and : [ {studentUid : { $in : schoolData?.totalStudents }} , {$or : [ { name : query} , { email : query } ]} , { email : { $ne : email } } ] }) ;
+        const schoolData = await SchoolsModel.findOne({ $or : [ { totalStudents : { $in : [userData?.studentUid] } } , { userId : userData?.studentUid } ] }) ;
+        const schoolFriends = await UsersModel.find(
+            { $and : [ 
+                { email : { $ne : email } } ,
+                {$or : [ { name : query} , { email : query } ]} , 
+                { $or : [ {studentUid : schoolData?.userId} , {studentUid : { $in : schoolData?.totalStudents }} ] } , 
+            ]}
+        ) ;
         return res.send(schoolFriends) ;
 
     } catch (error) {
