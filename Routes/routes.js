@@ -33,6 +33,7 @@ const getConversations = require('../Controllers/getConversations');
 const getReceiverDetails = require('../Controllers/getReceiverDetails');
 const getMessages = require('../Controllers/getMessages');
 const createMessage = require('../Controllers/createMessage');
+const getMyClasses = require('../Controllers/getMyClasses');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -54,6 +55,7 @@ router.get('/studentsForConversation' , getStudentsForConversation) // to get st
 router.get('/conversations' , getConversations) // to get students conversations ----------
 router.get('/receiverDetails' , getReceiverDetails) // to get receiver Details ----------
 router.get('/messages' , getMessages) // to get receiver Details ----------
+router.get('/myClasses' , getMyClasses) // to get receiver Details ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
