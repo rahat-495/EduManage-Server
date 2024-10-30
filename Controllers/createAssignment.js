@@ -1,7 +1,7 @@
 
 const ModulesModel = require('../Models/ModuleModel')
 
-const createModule = async (req , res) => {
+const createAssignment = async (req , res) => {
     try {
         
         const data = req.body ;
@@ -13,4 +13,4 @@ const createModule = async (req , res) => {
     }
 }
 
-module.exports = createModule ;
+module.exports = createAssignment ;

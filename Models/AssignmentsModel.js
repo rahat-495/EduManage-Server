@@ -1,7 +1,7 @@
 
 const mongoose = require("mongoose");
 
-const moduleSchema = new mongoose.Schema({
+const assignmentSchema = new mongoose.Schema({
     moduleName : {
         type : String ,
         default : '' ,
@@ -39,5 +39,5 @@ const moduleSchema = new mongoose.Schema({
     timestamps : true
 })
 
-const ModulesModel = mongoose.model('modules' , moduleSchema) ;
-module.exports = ModulesModel ;
+const AssignmentModel = mongoose.model('assignments' , assignmentSchema) ;
+module.exports = AssignmentModel ;
