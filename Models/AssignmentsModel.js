@@ -25,6 +25,11 @@ const assignmentSchema = new mongoose.Schema({
         default : '' ,
         required : [true , 'plz enter date']
     },
+    time : {
+        type : String ,
+        default : '' ,
+        required : [true , 'plz enter time']
+    },
     grade : {
         type : String ,
         default : '' ,

@@ -1,11 +1,11 @@
 
-const ModulesModel = require('../Models/ModuleModel')
+const AssignmentModel = require("../Models/AssignmentsModel");
 
 const createAssignment = async (req , res) => {
     try {
         
         const data = req.body ;
-        const result = await ModulesModel.create(data) ;
+        const result = await AssignmentModel.create(data) ;
         return res.send(result) ;
 
     } catch (error) {

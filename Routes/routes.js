@@ -37,6 +37,8 @@ const getMyClasses = require('../Controllers/getMyClasses');
 const getGradeStudents = require('../Controllers/getGradeStudents');
 const createModule = require('../Controllers/createModule');
 const createAssignment = require('../Controllers/createAssignment');
+const getUploadedModulesList = require('../Controllers/getUploadedModulesList');
+const getModuleDetails = require('../Controllers/getModuleDetails');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -60,6 +62,8 @@ router.get('/receiverDetails' , getReceiverDetails) // to get receiver Details -
 router.get('/messages' , getMessages) // to get messages ----------
 router.get('/myClasses' , getMyClasses) // to get classes for students ----------
 router.get('/gradeStudents' , getGradeStudents) // to get grades students ----------
+router.get('/getUploadedModulesList' , getUploadedModulesList) // to get uploaded modules list ----------
+router.get('/moduleDetails' , getModuleDetails) // to get module details ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
