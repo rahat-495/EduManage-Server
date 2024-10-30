@@ -35,6 +35,7 @@ const getMessages = require('../Controllers/getMessages');
 const createMessage = require('../Controllers/createMessage');
 const getMyClasses = require('../Controllers/getMyClasses');
 const getGradeStudents = require('../Controllers/getGradeStudents');
+const createModule = require('../Controllers/createModule');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -65,6 +66,7 @@ router.post('/reqForAddmission' , reqForAddmission) // to create the addmission 
 router.post('/jwt' , createJwt) // to create json web token ----------
 router.post('/conversation' , createConversation) // to create new conversation ----------
 router.post('/createMessage' , createMessage) // to create new message ----------
+router.post('/createModule' , createModule) // to create new module ----------
 
 router.put('/updateAddmission' , updateAddmission) // to update the addmission data ----------
 router.put('/updateSchool' , updateSchool) // to update the school Info ----------
