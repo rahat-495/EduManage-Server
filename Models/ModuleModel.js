@@ -2,23 +2,38 @@
 const mongoose = require("mongoose");
 
 const moduleSchema = new mongoose.Schema({
+    moduleData : {
+        type : Array ,
+        default : [
+            {
+                textForModuleTitle : {
+                    type : String ,
+                    default : '' ,
+                } ,
+                textForModule : {
+                    type : String ,
+                    default : '' ,
+                },
+            },
+            {
+                moduleImages : {
+                    type : Array ,
+                    default : [] ,
+                } ,
+            },
+            {
+                moduleVideos : {
+                    type : Array ,
+                    default : [] ,
+                } ,
+            },
+        ] ,
+        required : [true , 'plz enter moduleName']
+    },
     moduleName : {
         type : String ,
         default : '' ,
         required : [true , 'plz enter moduleName']
-    },
-    textForModule : {
-        type : String ,
-        default : '' ,
-    },
-    moduleDescription : {
-        type : String ,
-        default : '' ,
-        required : [true , 'plz enter moduleDescription']
-    },
-    moduleImages : {
-        type : Array ,
-        default : [] ,
     },
     date : {
         type : String ,
