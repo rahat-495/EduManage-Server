@@ -66,8 +66,8 @@ router.get('/myClasses' , getMyClasses) // to get classes for students ---------
 router.get('/gradeStudents' , getGradeStudents) // to get grades students ----------
 router.get('/getUploadedModulesList' , getUploadedModulesList) // to get uploaded modules list ----------
 router.get('/moduleDetails' , getModuleDetails) // to get module details ----------
-router.get('/moduleImage' , getModuleImage) // to get module Image ----------
-router.get('/moduleVideo' , getModuleVideo) // to get module video ----------
+router.get('/moduleImage' , getModuleImage) // to get module Image for teacher ----------
+router.get('/moduleVideo' , getModuleVideo) // to get module video for teacher ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
