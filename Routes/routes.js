@@ -41,6 +41,7 @@ const getUploadedModulesList = require('../Controllers/getUploadedModulesList');
 const getModuleDetails = require('../Controllers/getModuleDetails');
 const getModuleImage = require('../Controllers/getModuleImage');
 const getModuleVideo = require('../Controllers/getModuleVideo');
+const getMyClassModules = require('../Controllers/getMyClassModules');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -64,10 +65,11 @@ router.get('/receiverDetails' , getReceiverDetails) // to get receiver Details -
 router.get('/messages' , getMessages) // to get messages ----------
 router.get('/myClasses' , getMyClasses) // to get classes for students ----------
 router.get('/gradeStudents' , getGradeStudents) // to get grades students ----------
-router.get('/getUploadedModulesList' , getUploadedModulesList) // to get uploaded modules list ----------
+router.get('/getUploadedModulesList' , getUploadedModulesList) // to get uploaded modules list for teacher ----------
 router.get('/moduleDetails' , getModuleDetails) // to get module details ----------
 router.get('/moduleImage' , getModuleImage) // to get module Image for teacher ----------
 router.get('/moduleVideo' , getModuleVideo) // to get module video for teacher ----------
+router.get('/myClassModules' , getMyClassModules) // to get uploaded modules list for student ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
