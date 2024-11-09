@@ -6,7 +6,7 @@ const getUploadedModulesList = async (req , res) => {
         
         const {grade , subject} = req.query ;
         if(grade && subject){
-            const modules = await ModulesModel.find({ $and : [ {grade} , {subject} ] }).sort({ "createdAt" : -1 }).select("-moduleImages -textForModule -updatedAt -grade") ;
+            const modules = await ModulesModel.find({ $and : [ {grade} , {subject} ] }).sort({ "createdAt" : 1 }).select("-moduleImages -textForModule -updatedAt -grade") ;
             return res.send(modules) ;
         }
 

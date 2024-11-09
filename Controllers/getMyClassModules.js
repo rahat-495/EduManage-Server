@@ -7,7 +7,7 @@ const getMyClassModules = async (req , res) => {
         const {userUid , subject} = req.query ;
         if(userUid){
             const {grade} = await StudentsModel.findOne({studentUid : userUid}).select('grade') ;
-            const modules = await ModulesModel.find({ $and : [ {grade} , {subject} ] }).sort({ "createdAt" : -1 }).select("-moduleImages -textForModule -updatedAt -grade") ; 
+            const modules = await ModulesModel.find({ $and : [ {grade} , {subject} ] }).sort({ "createdAt" : 1 }).select("-moduleImages -textForModule -updatedAt -grade") ; 
             return res.send(modules) ;
         }
     } catch (error) {
