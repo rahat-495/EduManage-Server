@@ -6,6 +6,10 @@ const moduleSchema = new mongoose.Schema({
         type : Array ,
         default : [
             {
+                whichStudentsSeen : {
+                    type : Array ,
+                    default : [] ,
+                } ,
                 textForModuleTitle : {
                     type : String ,
                     default : '' ,
