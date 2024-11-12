@@ -15,7 +15,7 @@ const createModule = async (req , res) => {
         else{
             const {totalStudents} = await GradesModel.findOne({_id : data?.grade}).select("totalStudents") ;
             const result = await ModulesModel.create(data) ;
-            const updateAllUsers = await UsersModel.updateMany({studentUid : { $in : totalStudents }} , { $set : { lastSeenModuleData : `textinstruction/${result?._id}` } } , { strict: false }) ;
+            const updateAllUsers = await UsersModel.updateMany({studentUid : { $in : totalStudents }} , { $push : { lastSeenModuleDatas : `${result?.subject}/textinstruction/${result?._id}` } } , { strict: false }) ;
             return res.send(result) ;
         }
 
