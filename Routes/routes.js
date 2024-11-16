@@ -42,6 +42,7 @@ const getModuleDetails = require('../Controllers/getModuleDetails');
 const getModuleImage = require('../Controllers/getModuleImage');
 const getModuleVideo = require('../Controllers/getModuleVideo');
 const getMyClassModules = require('../Controllers/getMyClassModules');
+const getGoToNextLink = require('../Controllers/getGoToNextLink');
 const router = express.Router() ;
 
 router.get('/userDetails' , getCurrentUserDetails) // to get the current user details ----------
@@ -70,6 +71,7 @@ router.get('/moduleDetails' , getModuleDetails) // to get module details -------
 router.get('/moduleImage' , getModuleImage) // to get module Image ----------
 router.get('/moduleVideo' , getModuleVideo) // to get module video ----------
 router.get('/myClassModules' , getMyClassModules) // to get uploaded modules list for student ----------
+router.get('/goToNextLink' , getGoToNextLink) // to get last link for go there next => student ----------
 
 router.post('/addSchool' , addSchool) // to creating Schools ----------
 router.post('/addClass' , addGrades) // to creating Grades ----------
