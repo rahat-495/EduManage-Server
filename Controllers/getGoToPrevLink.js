@@ -4,7 +4,7 @@ const ModulesModel = require("../Models/ModuleModel");
 const getGoToPrevLink = async (req , res) => {
     try {
         
-        const {moduleId , subject} = req.query ;
+        const {moduleId , subject , studentUid} = req.query ;
         if(moduleId , subject){
             const modules = await ModulesModel.find({subject}).sort({ "createdAt" : 1 }) ;
             const indexOfMyCurrentModule = modules.findIndex((module) => module?._id.toString() === moduleId);
