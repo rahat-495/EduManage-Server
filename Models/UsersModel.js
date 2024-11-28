@@ -64,6 +64,10 @@ const userSchema = new mongoose.Schema({
         type : Array ,
         default : [] ,
     },
+    lastSeenModuleDatas : {
+        type : Array ,
+        default : [] ,
+    },
     devicesInfo: {
         type : [
             {

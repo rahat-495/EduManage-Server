@@ -1,11 +1,18 @@
 
 const ModulesModel = require("../Models/ModuleModel");
+const UsersModel = require("../Models/UsersModel");
 
 const getGoToPrevLink = async (req , res) => {
     try {
         
-        const {moduleId , subject , studentUid} = req.query ;
-        if(moduleId , subject){
+        const {moduleId , subject , studentUid , link} = req.query ;
+        if(link && subject && studentUid){
+            const {lastSeenModuleDatas} = await UsersModel.findOne({studentUid}).select("lastSeenModuleDatas") ;
+            const updatedLink = lastSeenModuleDatas?.filter((link) => !link?.includes(subject)) ;
+            const newLinks = [...updatedLink , subject+'/'+link] ;
+            await UsersModel.updateOne({studentUid} , { $set : { lastSeenModuleDatas : newLinks } } )
+        }
+        else if(moduleId && subject && !link){
             const modules = await ModulesModel.find({subject}).sort({ "createdAt" : 1 }) ;
             const indexOfMyCurrentModule = modules.findIndex((module) => module?._id.toString() === moduleId);
             if(modules[indexOfMyCurrentModule-1]){
